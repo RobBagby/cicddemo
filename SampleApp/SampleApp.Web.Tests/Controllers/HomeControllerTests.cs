@@ -12,7 +12,6 @@ namespace SampleApp.Web.Tests.Controllers
     [TestFixture]
     public class HomeControllerTests
     {
-        //New Tests
         [Test]
         public void Index()
         {
