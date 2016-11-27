@@ -25,3 +25,5 @@ Invoke-WebRequest "https://raw.githubusercontent.com/RobBagby/cicddemo/master/je
 New-NetFirewallRule -DisplayName 'Jenkins Inbound' -Profile @('Domain', 'Private', 'Public') -Direction Inbound -Action Allow -Protocol TCP -LocalPort @('8080', '50000')
 
 Restart-Service -Name Jenkins
+
+Invoke-Webrequest https://github.com/docker/compose/releases/download/1.9.0/docker-compose-Windows-x86_64.exe -OutFile $Env:Programfiles\docker\docker-compose.exe

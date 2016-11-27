@@ -1,0 +1,4 @@
+web:
+  image: rbagby/sampleapp
+  ports: 
+    - "80:80"
