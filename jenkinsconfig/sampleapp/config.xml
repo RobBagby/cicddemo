@@ -14,7 +14,7 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>https://github.com/RobBagby/cicddemo</url>
-        <credentialsId></credentialsId>
+        <credentialsId>50ad9a2d-6ced-4b3b-8962-0d2e96cf70f9</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -38,20 +38,37 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.BatchFile>
-      <command>docker build -t rbagby/sampleapp .</command>
+      <command>docker build -t rbagby/sampleapp:%GIT_COMMIT% .</command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
-      <command>docker run -i -v &quot;%WORKSPACE%&quot;:c:\test --rm --entrypoint powershell rbagby/sampleapp powershell ./RunTests.ps1</command>
+      <command>docker run -i -v &quot;%WORKSPACE%&quot;:c:\test --rm --entrypoint powershell rbagby/sampleapp:%GIT_COMMIT% powershell ./RunTests.ps1</command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
       <command>docker login -e=rob@robbagby.com -u=%DOCKERHUB_UN% -p=%DOCKERHUB_PWD%&#xd;
-docker push rbagby/sampleapp</command>
+docker push rbagby/sampleapp:%GIT_COMMIT%</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>docker-compose --verbose up -d --no-build</command>
     </hudson.tasks.BatchFile>
   </builders>
-  <publishers/>
+  <publishers>
+    <hudson.plugins.nunit.NUnitPublisher plugin="nunit@0.18">
+      <testResultsPattern>TestResult.xml</testResultsPattern>
+      <debug>false</debug>
+      <keepJUnitReports>false</keepJUnitReports>
+      <skipJUnitArchiver>false</skipJUnitArchiver>
+      <failIfNoResults>true</failIfNoResults>
+    </hudson.plugins.nunit.NUnitPublisher>
+  </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.10">
-      
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>
+          <credentialsId>2b518a13-1463-45a8-bde4-65ddf09e86a8</credentialsId>
+          <usernameVariable>DOCKERHUB_UN</usernameVariable>
+          <passwordVariable>DOCKERHUB_PWD</passwordVariable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordMultiBinding>
+      </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
   </buildWrappers>
 </project>
