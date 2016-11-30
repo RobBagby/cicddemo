@@ -20,7 +20,7 @@ Unzip $sourcePath "$currentPath"
 Start-Process jenkins.msi -ArgumentList '/quiet /passive' -Wait
 
 New-Item -ItemType Directory -Force -Path "C:\Program Files (x86)\Jenkins\jobs\sampleapp"
-Invoke-WebRequest "https://raw.githubusercontent.com/RobBagby/cicddemo/master/jenkinsconfig/sampleapp/config.xml" -OutFile "C:\Program Files (x86)\Jenkins\jobs\sampleapp\config.xml" -UseBasicParsing
+Invoke-WebRequest "https://raw.githubusercontent.com/RobBagby/cicddemo/master/jenkinsconfig/sampleapp/config.xml" -OutFile "C:\Program Files (x86)\Jenkins\jobs\sampleapp\config.xml.bak" -UseBasicParsing
 
 New-NetFirewallRule -DisplayName 'Jenkins Inbound' -Profile @('Domain', 'Private', 'Public') -Direction Inbound -Action Allow -Protocol TCP -LocalPort @('8080', '50000')
 
